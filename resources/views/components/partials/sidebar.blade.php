@@ -1,7 +1,25 @@
-<a href="{{ route('polis.index') }}" 
-   class="flex items-center p-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('polis.*') ? 'bg-primary text-white' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
-   <i class="fas fa-hospital w-4 text-center"></i>
-   <span class="ml-3">Manajemen Poli</span>
+<a href="{{ route('admin.index') }}"
+    class="{{ $baselink }} {{ request()->routeIs('admin.*') ? $active : $inactive }}">
+    <i class="fas fa-bed-pulse w-4 text-center"></i>
+    Manajemen Admin
+</a>
+
+<a href="{{ route('dokter.index') }}"
+    class="{{ $baselink }} {{ request()->routeIs('dokter.*') ? $active : $inactive }}">
+    <i class="fas fa-user-doctor w-4 text-center"></i>
+    Manajemen Dokter
+</a>
+
+<a href="{{ route('pasien.index') }}"
+    class="{{ $baselink }} {{ request()->routeIs('pasien.*') ? $active : $inactive }}">
+    <i class="fas fa-bed-pulse w-4 text-center"></i>
+    Manajemen Pasien
+</a>
+
+<a href="{{ route('obat.index') }}"
+    class="{{ $baselink }} {{ request()->routeIs('obat.*') ? $active : $inactive }}">
+    <i class="fas fa-bed-pulse w-4 text-center"></i>
+    Manajemen Obat
 </a>
 
 <aside class="w-full bg-transparent text-slate-300 flex flex-col min-h-screen">
