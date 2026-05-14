@@ -11,7 +11,7 @@ use App\Http\Controllers\Dokter\PeriksaPasienController;
 use App\Http\Controllers\Dokter\RiwayatPasienController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -25,7 +25,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
     Route::resource('dokter', DokterController::class);
-    Route::resource('polis', PoliController::class);
+    Route::resource('polis', PoliController::class); //poli noh biar ga pusing nyari
     Route::resource('pasien', PasienController::class);
     Route::resource('obat', ObatController::class);
 });
