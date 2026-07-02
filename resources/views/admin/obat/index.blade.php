@@ -28,44 +28,62 @@
                             <th class="px-6 py-4">Nama Obat</th>
                             <th class="px-6 py-4">Kemasan</th>
                             <th class="px-6 py-4">Harga</th>
+                            <th class="px-6 py-4">Stok</th> {{-- [TAMBAHAN UAS] Header Kolom Stok --}}
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
                     </thead>
 
                     {{-- Table Body --}}
                     <tbody class="text-sm text-slate-700">
-                        @forelse($obats as $obat)
+                        @forelse($obats as $copy_obat)
                         <tr class="border-t border-slate-100 hover:bg-slate-50 transition">
 
                             <td class="px-6 py-4 font-semibold text-slate-800">
-                                {{ $obat->nama_obat }}
+                                {{ $copy_obat->nama_obat }}
                             </td>
 
                             <td class="px-6 py-4">
                                 <span class="inline-block px-3 py-1 text-xs font-semibold 
                                              rounded-full bg-green-100 text-green-600">
-                                    {{ $obat->kemasan ?? '-' }}
+                                    {{ $copy_obat->kemasan ?? '-' }}
                                 </span>
                             </td>
 
                             <td class="px-6 py-4 font-semibold text-slate-800">
-                                Rp {{ number_format($obat->harga, 0, ',', '.') }}
+                                Rp {{ number_format($copy_obat->harga, 0, ',', '.') }}
+                            </td>
+
+                            {{-- [TAMBAHAN UAS] Logika Indikator Warna Stok Obat --}}
+                            <td class="px-6 py-4">
+                                @if($copy_obat->stok == 0)
+                                    <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-600">
+                                        Habis
+                                    </span>
+                                @elseif($copy_obat->stok <= 10)
+                                    <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-amber-100 text-amber-700">
+                                        {{ $copy_obat->stok }} (Menipis)
+                                    </span>
+                                @else
+                                    <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-600">
+                                        {{ $copy_obat->stok }}
+                                    </span>
+                                @endif
                             </td>
 
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2">
 
                                     {{-- Edit --}}
-                                    <a href="{{ route('obat.edit', $obat->id) }}" class="inline-flex items-center gap-1 px-4 py-2 
-                                              bg-amber-500 hover:bg-amber-600 
-                                              text-white text-xs font-semibold 
-                                              rounded-lg transition">
+                                    <a href="{{ route('obat.edit', $copy_obat->id) }}" class="inline-flex items-center gap-1 px-4 py-2 
+                                               bg-amber-500 hover:bg-amber-600 
+                                               text-white text-xs font-semibold 
+                                               rounded-lg transition">
                                         <i class="fas fa-pen text-xs"></i>
                                         Edit
                                     </a>
 
                                     {{-- Delete --}}
-                                    <form action="{{ route('obat.destroy', $obat->id) }}" method="POST">
+                                    <form action="{{ route('obat.destroy', $copy_obat->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
 
@@ -85,7 +103,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="4" class="text-center py-12 text-slate-400">
+                            <td colspan="5" class="text-center py-12 text-slate-400"> {{-- Colspan diubah jadi 5 karena kolom nambah --}}
                                 <i class="fas fa-inbox text-3xl mb-3 block"></i>
                                 Belum ada data obat
                             </td>

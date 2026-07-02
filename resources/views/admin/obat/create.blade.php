@@ -1,101 +1,62 @@
-<x-layouts.app title="Data Obat">
+<x-layouts.app title="Tambah Obat">
 
     {{-- Header --}}
-    <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-slate-800">
-            Data Obat
-        </h2>
-
-        <a href="{{ route('obat.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 
-                  bg-primary hover:bg-primary/90 
-                  text-white text-sm font-semibold 
-                  rounded-xl transition">
-            <i class="fas fa-plus text-xs"></i>
-            Tambah Obat
+    <div class="mb-6">
+        <a href="{{ route('obat.index') }}" class="text-sm font-semibold text-primary hover:underline flex items-center gap-2 mb-2">
+            <i class="fas fa-arrow-left text-xs"></i> Kembali ke Data Obat
         </a>
+        <h2 class="text-2xl font-bold text-slate-800">
+            Tambah Obat Baru
+        </h2>
     </div>
 
-    {{-- Card --}}
-    <div class="card bg-base-100 shadow-md rounded-2 border">
-        <div class="card-body p-0">
+    {{-- Form Card --}}
+    <div class="card bg-base-100 shadow-md rounded-2 border max-w-2xl">
+        <div class="card-body p-6">
+            <form action="{{ route('obat.store') }}" method="POST">
+                @csrf
 
-            <div class="overflow-x-auto">
-                <table class="table w-full">
+                <div class="grid grid-cols-1 gap-6">
+                    {{-- Nama Obat --}}
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Nama Obat</label>
+                        <input type="text" name="nama_obat" required
+                            class="w-full px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition"
+                            placeholder="Contoh: Paracetamol 500mg">
+                    </div>
 
-                    {{-- Table Head --}}
-                    <thead class="bg-slate-50 text-slate-500 uppercase text-xs tracking-wider">
-                        <tr>
-                            <th class="px-6 py-4">Nama Obat</th>
-                            <th class="px-6 py-4">Kemasan</th>
-                            <th class="px-6 py-4">Harga</th>
-                            <th class="px-6 py-4 text-right">Aksi</th>
-                        </tr>
-                    </thead>
+                    {{-- Kemasan --}}
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Kemasan</label>
+                        <input type="text" name="kemasan"
+                            class="w-full px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition"
+                            placeholder="Contoh: Strip @ 10 tablet">
+                    </div>
 
-                    {{-- Table Body --}}
-                    <tbody class="text-sm text-slate-700">
-                        @forelse($obats as $obat)
-                        <tr class="border-t border-slate-100 hover:bg-slate-50 transition">
+                    {{-- Harga --}}
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Harga (Rp)</label>
+                        <input type="number" name="harga" required
+                            class="w-full px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition"
+                            placeholder="Contoh: 5000">
+                    </div>
 
-                            <td class="px-6 py-4 font-semibold text-slate-800">
-                                {{ $obat->nama_obat }}
-                            </td>
+                    {{-- [TAMBAHAN UAS] Input Stok Awal --}}
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Stok Awal Obat</label>
+                        <input type="number" name="stok" value="0" min="0" required
+                            class="w-full px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition"
+                            placeholder="Contoh: 50">
+                    </div>
+                </div>
 
-                            <td class="px-6 py-4">
-                                <span class="inline-block px-3 py-1 text-xs font-semibold 
-                                             rounded-full bg-green-100 text-green-600">
-                                    {{ $obat->kemasan ?? '-' }}
-                                </span>
-                            </td>
-
-                            <td class="px-6 py-4 font-semibold text-slate-800">
-                                Rp {{ number_format($obat->harga, 0, ',', '.') }}
-                            </td>
-
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex justify-end gap-2">
-
-                                    {{-- Edit --}}
-                                    <a href="{{ route('obat.edit', $obat->id) }}" class="inline-flex items-center gap-1 px-4 py-2 
-                                              bg-amber-500 hover:bg-amber-600 
-                                              text-white text-xs font-semibold 
-                                              rounded-lg transition">
-                                        <i class="fas fa-pen text-xs"></i>
-                                        Edit
-                                    </a>
-
-                                    {{-- Delete --}}
-                                    <form action="{{ route('obat.destroy', $obat->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button type="submit"
-                                            onclick="return confirm('Yakin ingin menghapus obat ini?')" class="inline-flex items-center gap-1 px-4 py-2 
-                                                   bg-red-500 hover:bg-red-600 
-                                                   text-white text-xs font-semibold 
-                                                   rounded-lg transition">
-                                            <i class="fas fa-trash text-xs"></i>
-                                            Hapus
-                                        </button>
-                                    </form>
-
-                                </div>
-                            </td>
-
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="4" class="text-center py-12 text-slate-400">
-                                <i class="fas fa-inbox text-3xl mb-3 block"></i>
-                                Belum ada data obat
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-
-                </table>
-            </div>
-
+                {{-- Action Buttons --}}
+                <div class="flex justify-end gap-3 mt-6 pt-6 border-t">
+                    <button type="submit" class="px-5 py-2.5 bg-primary hover:bg-primary/90 text-white font-semibold rounded-xl transition">
+                        Simpan Obat
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

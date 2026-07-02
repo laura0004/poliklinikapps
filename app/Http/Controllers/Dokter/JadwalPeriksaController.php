@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Dokter;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; 
+use App\Models\JadwalPeriksa;        
 
 class JadwalPeriksaController extends Controller
 {
     public function index()
     {
         $dokter = Auth::user();
-        $jadwals = JadwalPeriksa::where('id_dokter', auth()->user()->id)->get();
+        $jadwalPeriksas = JadwalPeriksa::where('id_dokter', auth()->user()->id)->get();
         return view('dokter.jadwal-periksa.index', compact('jadwalPeriksas'));
     }
 
@@ -62,7 +64,7 @@ class JadwalPeriksaController extends Controller
 
         return redirect()->route('jadwal-periksa.index')
             ->with('message', 'Berhasil Melakukan Update Data')
-            ->with('type', 'succsess');
+            ->with('type', 'success');
     }
 
     public function destroy(string $id)
@@ -72,6 +74,6 @@ class JadwalPeriksaController extends Controller
 
         return redirect()->route('jadwal-periksa.index')
             ->with('message', 'Berhasil Melakukan Hapus Data')
-            ->with('type', 'succsess');
+            ->with('type', 'success');
     }
 }

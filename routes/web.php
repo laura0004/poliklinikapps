@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ObatController;
 use App\Http\Controllers\Pasien\PoliController as PasienPoliController;
 use App\Http\Controllers\Dokter\PeriksaPasienController;
 use App\Http\Controllers\Dokter\RiwayatPasienController;
+use App\Http\Controllers\Dokter\JadwalPeriksaController; // <-- REVISI: Sudah ditambahkan biar ga error "does not exist"
 
 Route::get('/', function () {
     return view('auth.login');
@@ -37,6 +38,7 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->group(function () 
     Route::resource('jadwal-periksa', JadwalPeriksaController::class);
 
     Route::get('/periksa-pasien', [PeriksaPasienController::class, 'index'])->name('periksa-pasien.index');
+    // Jika butuh edit periksa, buat route tersendiri di sini
     Route::post('/periksa-pasien', [PeriksaPasienController::class, 'store'])->name('periksa-pasien.store');
     Route::get('/periksa-pasien/{id}', [PeriksaPasienController::class, 'create'])->name('periksa-pasien.create');
 
